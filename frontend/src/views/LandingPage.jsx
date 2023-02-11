@@ -3,11 +3,8 @@ import CSS from './LandingPage.module.css'
 
 const LandingPage = () => {
     return (
-        <div >
-            <h1>Welcome To Tropics</h1>
-            <div className={CSS.globeContainer}>
+        <div>
             <World />
-            </div>
         </div>
     )
 }
