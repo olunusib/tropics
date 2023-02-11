@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import Globe from 'react-globe.gl';
-import Labels from './labels'
 import locations from './location-data';
 
 const World = () => {
