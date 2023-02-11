@@ -1,28 +1,33 @@
-import React, {useEffect, useState} from 'react';
+import React, { useRef } from 'react';
 import Globe from 'react-globe.gl';
-
+import Labels from './labels'
 
 const World = () => {
-    const [places, setPlaces] = useState([]);
+    const globeEl = useRef();
+    return (
+        <div>
+            <Globe
+                //size
+                width={1300}
+                height={700}
 
-    useEffect(() => {
-        fetch('./ne_110m_populated_places_simple.geojson').then(res => res.json())
-            .then(({ features }) => setPlaces(features));
-    }, []);
+                pointOfView
+                ref={globeEl}
+                globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
+                backgroundImageUrl="//unpkg.com/three-globe/example/img/night-sky.png"
 
-    return <Globe
-        globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
-        backgroundImageUrl="//unpkg.com/three-globe/example/img/night-sky.png"
-
-        labelsData={places}
-        labelLat={d => d.properties.latitude}
-        labelLng={d => d.properties.longitude}
-        labelText={d => d.properties.name}
-        labelSize={d => Math.sqrt(d.properties.pop_max) * 4e-4}
-        labelDotRadius={d => Math.sqrt(d.properties.pop_max) * 4e-4}
-        labelColor={() => 'rgba(255, 165, 0, 0.75)'}
-        labelResolution={2}
-    />;
+                //labels
+                labelsData={Labels}
+                labelLat={(d) => d.lat}
+                labelLng={(d) => d.lng}
+                labelText={(d) => d.name}
+                labelSize={(d) => 0.5 + d.size}
+                labelDotRadius={(d) => 0.5 + d.size}
+                labelColor={() => "rgba(255, 165, 0, 0.75)"}
+                labelResolution={2}
+            />
+        </div>
+    )
 };
 
 

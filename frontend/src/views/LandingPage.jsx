@@ -6,18 +6,15 @@ const LandingPage = () => {
 
     return (
 
-        <div>
+        <div >
             <h1>Welcome To Tropics</h1>
 
-            <div className={CSS.globe_container}>
+            <div className={CSS.globeContainer}>
             <World />
             </div>
 
         </div>
-
-
     )
-
 }
 
 
