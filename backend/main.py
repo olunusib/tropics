@@ -74,13 +74,20 @@ def forestry(country):
         src = images[i].get('src')
         if country in src:
             source = 'http:' + src
-            return {country: {"score": integrity_scores[country],
-                              "image": source
+            if integrity_scores[country]["Score"] > 9.6:
+                rating = "High landscape-level integrity"
+            elif integrity_scores[country]["Score"] > 6:
+                rating = "Medium landscape-level integrity"
+            else:
+                rating = "Low landscape-level integrity"
+            return {country: {"score": integrity_scores [country]["Score"],
+                              "image": source, 
+                              "rating": rating
                               }
                     }
-            
+    # placeholder      
     return {country: {"score": 5.0,
                       "image": "https://upload.wikimedia.org/wikipedia/commons/1/11/FLII_Bhutan.png",
+                      "rating": "Medium landscape-level integrity", 
                       }
             }
-    
