@@ -2,6 +2,8 @@ from flask import Flask
 from flask_cors import CORS
 import requests
 from co2_emissions import emissions
+from bs4 import BeautifulSoup
+from forest_integrity import integrity_scores
 from datetime import datetime, timedelta
 
 api = Flask(__name__)
@@ -57,3 +59,31 @@ def my_details(country):
     print(country_emissions)
     return country_emissions
 
+@api.route('/forestry/country')
+def forestry(country):
+    # get URL
+    page = requests.get("https://en.wikipedia.org/wiki/Forest_Landscape_Integrity_Index")
+
+    # scrape webpage
+    soup = BeautifulSoup(page.content, 'html.parser')
+
+    # display scraped data
+    My_table = soup.find('table')
+
+    images = My_table.find_all('img')
+
+
+    for i in range(1, len(images), 2):
+        src = images[i].get('src')
+        if country in src:
+            source = 'http:' + src
+            return {country: {"score": integrity_scores[country],
+                              "image": source
+                              }
+                    }
+            
+    return {country: {"score": 5.0,
+                      "image": "https://upload.wikimedia.org/wikipedia/commons/1/11/FLII_Bhutan.png",
+                      }
+            }
+    
