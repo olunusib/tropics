@@ -15,7 +15,7 @@ function getRandomColor(times) {
     return colors;
 }
 
-const LineChart = ({ data }) => (
+const LineChart = ({ data, xAxis, yAxis }) => (
     <ResponsiveLine
         data={data}
         colors={getRandomColor(data.length)}
@@ -38,7 +38,7 @@ const LineChart = ({ data }) => (
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'transportation',
+            legend: xAxis,
             legendOffset: 36,
             legendPosition: 'middle'
         }}
@@ -47,8 +47,8 @@ const LineChart = ({ data }) => (
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'count',
-            legendOffset: -40,
+            legend: yAxis,
+            legendOffset: -45,
             legendPosition: 'middle'
         }}
         pointSize={2}
@@ -62,11 +62,11 @@ const LineChart = ({ data }) => (
                 anchor: 'top-right',
                 direction: 'row',
                 justify: false,
-                translateX: 90,
+                translateX: 0,
                 translateY: -40,
-                itemsSpacing: 10,
+                itemsSpacing: 25,
                 itemDirection: 'left-to-right',
-                itemWidth: 80,
+                itemWidth: 90,
                 itemHeight: 20,
                 itemOpacity: 0.75,
                 toggleSerie: true,
