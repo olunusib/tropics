@@ -6,9 +6,12 @@ from bs4 import BeautifulSoup
 from forest_integrity import integrity_scores
 from datetime import datetime, timedelta
 from email_and_sms import sendmail, send_text
+from dotenv import load_dotenv
+
 
 api = Flask(__name__)
 CORS(api)
+load_dotenv()
 
 
 def get_boundingbox_country(country):
@@ -106,18 +109,32 @@ def subscribe_with_email():
     phone = payload["phoneNumber"]
     country = payload["country"]
 
+    emailSent = False
+    phoneSent = False
+
     try:
         if email:
             sendmail(email, country)
+            emailSent = True
     except:
+        print("Email problem")
         
 
+    try:
+        if phone:
+            send_text(phone, country)
+            phoneSent = True
+    except:
+        print("Phone problem")
 
-    if phone:
-        send_text(phone, country)
 
-    response = make_response("Success")
-    response.status_code = 200
+    if emailSent or phoneSent:
+        response = make_response("Success")
+        response.status_code = 200
+
+    else:
+        response = make_response("Failure")
+        response.status_code = 500
 
     return response
 
