@@ -2,19 +2,23 @@ import React from "react";
 import { ResponsiveLine } from "@nivo/line";
 
 
-function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
+function getRandomColor(times) {
+    let colors = []
+    for (var j = 0; j < times; j++) {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        colors.push(color);
     }
-    return color;
-  }
+    return colors;
+}
 
 const LineChart = ({ data }) => (
     <ResponsiveLine
         data={data}
-        colors={[getRandomColor()]}
+        colors={getRandomColor(data.length)}
         margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
         enableGridX={false}
         enableGridY={true}
@@ -58,9 +62,9 @@ const LineChart = ({ data }) => (
                 anchor: 'top-right',
                 direction: 'row',
                 justify: false,
-                translateX: 100,
+                translateX: 90,
                 translateY: -40,
-                itemsSpacing: 0,
+                itemsSpacing: 10,
                 itemDirection: 'left-to-right',
                 itemWidth: 80,
                 itemHeight: 20,

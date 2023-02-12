@@ -2,26 +2,33 @@ import React from 'react';
 import CSS from './ClimateProfile.module.css'
 import { useParams } from "react-router-dom";
 import LineChart from '../components/Chart/AnalyticsChart';
-import { data } from "../components/Chart/data";
+import { useAxiosGet } from './hooks';
+import { convertToNivoFormat } from './utils'
 
-const ChartContainer = () => (
-    <div className={CSS.container}>
-        <div className={CSS.chartHeader}>
-            <p>Daily Temperature Rise</p>
-        </div>
-        <div className={CSS.chartBody}>
-        <LineChart data={data}/>
-        </div>
-    </div>
-);
 
-const Charts = () => {
+const ChartContainer = (props) => {
+
+    const { title, data } = props;
+
+    return (
+        <div className={CSS.container}>
+            <div className={CSS.chartHeader}>
+                <p>{title}</p>
+            </div>
+            <div className={CSS.chartBody}>
+                <LineChart data={data} />
+            </div>
+        </div>
+    );
+};
+
+const Charts = ({ data }) => {
     return (
         <div className={CSS.grid}>
-            <ChartContainer>Container 1</ChartContainer>
-            <ChartContainer>Container 2</ChartContainer>
-            <ChartContainer>Container 3</ChartContainer>
-            <ChartContainer>Container 4</ChartContainer>
+            <ChartContainer title={"Daily Weather Conditions"} data={data} />
+            <ChartContainer title={"Daily Weather Conditions"} data={data} />
+            <ChartContainer title={"Daily Weather Conditions"} data={data} />
+            <ChartContainer title={"Daily Weather Conditions"} data={data} />
         </div>
     );
 };
@@ -30,11 +37,19 @@ const ClimateProfile = (props) => {
 
     const { name } = useParams();
 
+    const { data, loaded } = useAxiosGet(name);
+
     return (
-        <div className={CSS.dashboard}>
-            <p>{`Climate profile for ${name}`}</p>
-            <Charts />
-        </div>
+        <React.Fragment>
+            {!loaded ? (
+                <p>Loading ...</p>
+            ) : (
+                <div className={CSS.dashboard}>
+                    <p>{`Climate profile for ${name}`}</p>
+                    <Charts data={convertToNivoFormat(data)} />
+                </div>
+            )}
+        </React.Fragment>
     )
 }
 
