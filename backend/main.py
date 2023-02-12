@@ -51,6 +51,9 @@ def my_profile(country):
 def my_details(country):
 
     country_name = country
-    country_emissions = next(item for item in emissions if item["country"] == f"{country_name.lower()}")
+    country_emissions = next(item for item in emissions if item["country"].lower() == f"{country_name.lower()}")
+    
+
+    print(country_emissions)
     return country_emissions
 
