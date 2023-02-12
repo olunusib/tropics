@@ -1,5 +1,4 @@
-import World from '../components/3DGlobe'
-import CSS from './LandingPage.module.css'
+import World from '../components/3DGlobe/3DGlobe'
 
 const LandingPage = () => {
     return (
