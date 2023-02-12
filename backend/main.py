@@ -1,58 +1,65 @@
 from flask import Flask
 import requests
 from datetime import datetime, timedelta
+
 api = Flask(__name__)
 
-lng , lat =  -71.0466, 42.3478
-@api.route('/profile')
-def my_profile(lat, lng):
+
+def get_boundingbox_country(country):
+    url = '{0}{1}{2}'.format(
+        'http://nominatim.openstreetmap.org/search?country=', country,
+        '&format=json&polygon=0')
+
+    try:
+        response = requests.get(url).json()[0]
+        lst = [response.get(key) for key in ['lat', 'lon']]
+        output = [float(i) for i in lst]
+    except:
+        output = [0, 0]
+
+    return output
+
+
+@api.route('/profile/<country>')
+def my_profile(country):
+
+    lat, lng = get_boundingbox_country(country)
 
     url = f"https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lng}&appid=5278a40f76dd0bf571b929f01a997887"
 
-    headers = {
-        "accept": "application/json",
-        "Accept-Encoding": "gzip"
-    }
+    headers = {"accept": "application/json", "Accept-Encoding": "gzip"}
 
     response = requests.get(url, headers=headers)
     mid_temps = {}
-    print(len(response.json()['list']))
     temps = response.json()['list']
     # mock indexes for 5 days
     temps_index = [5, 13, 22, 28, 35]
     for days, index in enumerate(temps_index):
-        mid_temps[datetime.now() + timedelta(days=days)] = {
-            "temp":temps[index]['main']['feels_like'],
+        mid_temps[str(datetime.now() + timedelta(days=days))] = {
+            "temp": temps[index]['main']['feels_like'],
             "sea_level": temps[index]['main']['sea_level'],
             "ground_level": temps[index]['main']['grnd_level'],
-            "humidity": temps[index]['main']['humidity']}
-        print("\n\n")
-    print(mid_temps)
+            "humidity": temps[index]['main']['humidity']
+        }
 
     return mid_temps
 
-my_profile(lat, lng)
 
-@api.route('/details')
-def my_details(lat, lng):
+@api.route('/details/<country>')
+def my_details(country):
+
+    lat, lng = get_boundingbox_country(country)
 
     url = f"https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lng}&appid=5278a40f76dd0bf571b929f01a997887"
 
-    headers = {
-        "accept": "application/json",
-        "Accept-Encoding": "gzip"
-    }
+    headers = {"accept": "application/json", "Accept-Encoding": "gzip"}
 
     response = requests.get(url, headers=headers)
     mid_temps = {}
-    print(len(response.json()['list']))
     temps = response.json()['list']
     temps_index = [5, 13, 22, 28, 35]
     for days, index in enumerate(temps_index):
-        mid_temps[datetime.now() + timedelta(days=days)] = temps[index]['main']['feels_like']
-        print("\n\n")
-        print(mid_temps)
+        mid_temps[str(datetime.now() + timedelta(
+            days=days))] = temps[index]['main']['feels_like']
 
     return mid_temps
-
-my_profile(lat, lng)
