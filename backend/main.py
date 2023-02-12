@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 import requests
+from co2_emissions import emissions
 from datetime import datetime, timedelta
 
 api = Flask(__name__)
@@ -49,18 +50,7 @@ def my_profile(country):
 @api.route('/carbon/<country>')
 def my_details(country):
 
-    lat, lng = get_boundingbox_country(country)
+    country_name = country
+    country_emissions = next(item for item in emissions if item["country"] == f"{country_name.lower()}")
+    return country_emissions
 
-    url = f"https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lng}&appid=5278a40f76dd0bf571b929f01a997887"
-
-    headers = {"accept": "application/json", "Accept-Encoding": "gzip"}
-
-    response = requests.get(url, headers=headers)
-    mid_temps = {}
-    temps = response.json()['list']
-    temps_index = [5, 13, 22, 28, 35]
-    for days, index in enumerate(temps_index):
-        mid_temps[str(datetime.now() + timedelta(
-            days=days))[:10]] = temps[index]['main']['feels_like']
-
-    return mid_temps
