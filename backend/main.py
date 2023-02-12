@@ -18,6 +18,7 @@ def my_profile(lat, lng):
     mid_temps = {}
     print(len(response.json()['list']))
     temps = response.json()['list']
+    # mock indexes for 5 days
     temps_index = [5, 13, 22, 28, 35]
     for days, index in enumerate(temps_index):
         mid_temps[datetime.now() + timedelta(days=days)] = {
@@ -32,5 +33,26 @@ def my_profile(lat, lng):
 
 my_profile(lat, lng)
 
+@api.route('/details')
+def my_details(lat, lng):
+
+    url = f"https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lng}&appid=5278a40f76dd0bf571b929f01a997887"
+
+    headers = {
+        "accept": "application/json",
+        "Accept-Encoding": "gzip"
+    }
+
+    response = requests.get(url, headers=headers)
+    mid_temps = {}
+    print(len(response.json()['list']))
+    temps = response.json()['list']
+    temps_index = [5, 13, 22, 28, 35]
+    for days, index in enumerate(temps_index):
+        mid_temps[datetime.now() + timedelta(days=days)] = temps[index]['main']['feels_like']
+        print("\n\n")
+        print(mid_temps)
+
+    return mid_temps
 
 my_profile(lat, lng)
