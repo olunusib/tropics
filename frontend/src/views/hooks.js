@@ -1,18 +1,34 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
 
-export const useAxiosGet = (country) => {
-    const [data, setData] = useState(null);
+export const useAxiosGetForWeather = (country) => {
+    const [weatherData, setWeatherData] = useState(null);
     const [error, setError] = useState("");
-    const [loaded, setLoaded] = useState(false);
+    const [weatherLoaded, setWeatherLoaded] = useState(false);
   
     useEffect(() => {
       axios
         .get(`http://localhost:5000/temperature/${country}`)
-        .then((response) => setData(response.data))
+        .then((response) => setWeatherData(response.data))
         .catch((error) => setError(error.message))
-        .finally(() => setLoaded(true));
+        .finally(() => setWeatherLoaded(true));
     }, [country]);
   
-    return { data, error, loaded };
+    return { weatherData, error, weatherLoaded };
+  };
+
+  export const useAxiosGetForCarbon = (country) => {
+    const [carbonData, setcarbonData] = useState(null);
+    const [error, setError] = useState("");
+    const [carbonLoaded, setCarbonLoaded] = useState(false);
+  
+    useEffect(() => {
+      axios
+        .get(`http://localhost:5000/carbon/${country}`)
+        .then((response) => setcarbonData(response.data))
+        .catch((error) => setError(error.message))
+        .finally(() => setCarbonLoaded(true));
+    }, [country]);
+  
+    return { carbonData, error, carbonLoaded };
   };

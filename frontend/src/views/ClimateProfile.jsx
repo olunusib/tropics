@@ -2,11 +2,12 @@ import React from 'react';
 import CSS from './ClimateProfile.module.css'
 import { useParams } from "react-router-dom";
 import LineChart from '../components/Chart/AnalyticsChart';
-import { useAxiosGet } from './hooks';
-import { convertToNivoFormat } from './utils'
+import PieChart from '../components/Chart/AnalyticsPieChart';
+import { useAxiosGetForWeather, useAxiosGetForCarbon } from './hooks';
+import { convertToNivoFormatWeather, convertToNivoFormatCarbon } from './utils'
 
 
-const ChartContainer = (props) => {
+const ChartContainerWeather = (props) => {
 
     const { title, data, xAxis, yAxis } = props;
 
@@ -22,13 +23,32 @@ const ChartContainer = (props) => {
     );
 };
 
-const Charts = ({ data }) => {
+const ChartContainerCarbon = (props) => {
+
+    const { title, data } = props;
+
+    return (
+        <div className={CSS.container}>
+            <div className={CSS.chartHeader}>
+                <p>{title}</p>
+            </div>
+            <div className={CSS.chartBody}>
+                <PieChart data={data} />
+            </div>
+        </div>
+    );
+};
+
+const Charts = (props) => {
+
+    const {weatherData, carbonData} = props;
+
     return (
         <div className={CSS.grid}>
-            <ChartContainer title={"Daily Weather Conditions"} data={data} xAxis={"days"} yAxis={"value"}/>
-            <ChartContainer title={"Daily Weather Conditions"} data={data} />
-            <ChartContainer title={"Daily Weather Conditions"} data={data} />
-            <ChartContainer title={"Daily Weather Conditions"} data={data} />
+            <ChartContainerWeather title={"Daily Weather Conditions"} data={weatherData} xAxis={"days"} yAxis={"value"}/>
+            <ChartContainerCarbon title={"Relative Carbon Emissions"} data={carbonData} />
+            <ChartContainerWeather title={"Daily Weather Conditions"} data={weatherData}  xAxis={"days"} yAxis={"value"}/>
+            <ChartContainerWeather title={"Daily Weather Conditions"} data={weatherData} xAxis={"days"} yAxis={"value"}/>
         </div>
     );
 };
@@ -37,16 +57,17 @@ const ClimateProfile = (props) => {
 
     const { name } = useParams();
 
-    const { data, loaded } = useAxiosGet(name);
+    const { weatherData, weatherLoaded } = useAxiosGetForWeather(name);
+    const { carbonData, carbonLoaded } = useAxiosGetForCarbon(name);
 
     return (
         <React.Fragment>
-            {!loaded ? (
+            {!(weatherLoaded && carbonLoaded) ? (
                 <p>Loading ...</p>
             ) : (
                 <div className={CSS.dashboard}>
                     <p>{`Climate profile for ${name}`}</p>
-                    <Charts data={convertToNivoFormat(data)} />
+                    <Charts weatherData={convertToNivoFormatWeather(weatherData)} carbonData={convertToNivoFormatCarbon(carbonData)} />
                 </div>
             )}
         </React.Fragment>
