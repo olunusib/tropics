@@ -1,10 +1,11 @@
-from flask import Flask
+from flask import Flask, render_template, request, url_for, jsonify
 from flask_cors import CORS
 import requests
 from co2_emissions import emissions
 from bs4 import BeautifulSoup
 from forest_integrity import integrity_scores
 from datetime import datetime, timedelta
+from email_and_sms import sendmail
 
 api = Flask(__name__)
 CORS(api)
@@ -94,3 +95,15 @@ def forestry(country):
         "image":
         "https://upload.wikimedia.org/wikipedia/commons/1/11/FLII_Bhutan.png"
     }
+
+
+@api.route('/subscribe', methods=["POST"])
+
+def subscribe_with_email():
+    payload = requests.get_json()
+
+    email = payload["email"]
+    phone = payload["phoneNumber"]
+
+    print(payload)
+    return "Success"
