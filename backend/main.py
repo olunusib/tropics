@@ -106,8 +106,12 @@ def subscribe_with_email():
     phone = payload["phoneNumber"]
     country = payload["country"]
 
-    if email:
-        sendmail(email, country)
+    try:
+        if email:
+            sendmail(email, country)
+    except:
+        
+
 
     if phone:
         send_text(phone, country)
