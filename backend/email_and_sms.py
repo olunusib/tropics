@@ -17,9 +17,9 @@ def sendmail(destination_email, country):
     server.quit()
 
 #Define the send_text function
-def send_text():
-    client = Client("YourTwilioID", "YourTwilioAuthToken")
-    client.messages.create(to="YourPhoneNumber",
-                           from_="TwilioNumber",
-                           body="You have successfully suscribed to receive updates!")
+def send_text(destination_phone_number, country):
+    client = Client("AC8a9e6d8bce518605a1dec43427bf1fab", "29aebe926bb09be5cb5a464cbf75c00e")
+    client.messages.create(to=f"{destination_phone_number}",
+                           from_="+18559272158",
+                           body=f"You have successfully suscribed to receive Tropics🏝️ updates!\n Look forward to receiving mores updates on {country}.")
     print('Text Sent!')

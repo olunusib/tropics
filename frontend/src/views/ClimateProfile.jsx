@@ -85,7 +85,7 @@ const Charts = (props) => {
     );
 };
 
-const SubscribeForm = () => {
+const SubscribeForm = ({country}) => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [email, setEmail] = useState('');
     const [subscribed, setSubscribed] = useState(false);
@@ -95,17 +95,16 @@ const SubscribeForm = () => {
         event.preventDefault();
 
         try {
-            const response = await fetch('http:localhost:5000/subscribe', {
+            const response = await fetch('http://localhost:5000/subscribe', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ phoneNumber, email }),
+                body: JSON.stringify({ phoneNumber, email, country }),
             });
 
             if (!response.ok) {
                 throw new Error('Failed to subscribe');
-                setError(true);
             }
 
             setSubscribed(true);
@@ -164,7 +163,7 @@ const ClimateProfile = (props) => {
                             <p>{`Do you wish to subscribe to receive updates about changes to ${name}'s data?`}</p>
                         </div>
                         <div className={CSS.subscribeForm}>
-                        <SubscribeForm />
+                        <SubscribeForm country={name}/>
                         </div>
                     </div>
                 </div>
