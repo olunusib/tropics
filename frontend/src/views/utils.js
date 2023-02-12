@@ -10,16 +10,16 @@ export const convertToNivoFormat = (rawData) => {
 
     const final = [
         {
-            id: "Sea Level",
+            id: "Sea Level (ft)",
             data: []
         },{
-            id: "Humidity",
+            id: "Humidity (g/kg)",
             data: []
         },{
-            id: "Temperature",
+            id: "Temperature (K)",
             data: []
         },{
-            id: "Elevation",
+            id: "Elevation (ft)",
             data: []
         }
     ]

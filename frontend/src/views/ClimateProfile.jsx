@@ -8,7 +8,7 @@ import { convertToNivoFormat } from './utils'
 
 const ChartContainer = (props) => {
 
-    const { title, data } = props;
+    const { title, data, xAxis, yAxis } = props;
 
     return (
         <div className={CSS.container}>
@@ -16,7 +16,7 @@ const ChartContainer = (props) => {
                 <p>{title}</p>
             </div>
             <div className={CSS.chartBody}>
-                <LineChart data={data} />
+                <LineChart data={data} xAxis={xAxis} yAxis={yAxis}/>
             </div>
         </div>
     );
@@ -25,7 +25,7 @@ const ChartContainer = (props) => {
 const Charts = ({ data }) => {
     return (
         <div className={CSS.grid}>
-            <ChartContainer title={"Daily Weather Conditions"} data={data} />
+            <ChartContainer title={"Daily Weather Conditions"} data={data} xAxis={"days"} yAxis={"value"}/>
             <ChartContainer title={"Daily Weather Conditions"} data={data} />
             <ChartContainer title={"Daily Weather Conditions"} data={data} />
             <ChartContainer title={"Daily Weather Conditions"} data={data} />
