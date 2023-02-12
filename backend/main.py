@@ -5,6 +5,8 @@ from co2_emissions import emissions
 from bs4 import BeautifulSoup
 from forest_integrity import integrity_scores
 from datetime import datetime, timedelta
+import smtplib
+from twilio.rest import Client
 
 api = Flask(__name__)
 CORS(api)
@@ -94,3 +96,13 @@ def forestry(country):
         "image":
         "https://upload.wikimedia.org/wikipedia/commons/1/11/FLII_Bhutan.png"
     }
+
+
+#Define the send_text function
+@api.route('/subscribe/phone')
+def send_text(destination_phone_number, country):
+    client = Client("AC8a9e6d8bce518605a1dec43427bf1fab", "29aebe926bb09be5cb5a464cbf75c00e")
+    client.messages.create(to=f"{destination_phone_number}",
+                           from_="+18559272158",
+                           body=f"You have successfully suscribed to receive Tropics🏝️ updates!\n Look forward to receiving mores updates on {country}.")
+    print('Text Sent!')
