@@ -6,7 +6,12 @@ import { data } from "../components/Chart/data";
 
 const ChartContainer = () => (
     <div className={CSS.container}>
+        <div className={CSS.chartHeader}>
+            <p>Daily Temperature Rise</p>
+        </div>
+        <div className={CSS.chartBody}>
         <LineChart data={data}/>
+        </div>
     </div>
 );
 
