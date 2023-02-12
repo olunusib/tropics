@@ -1,0 +1,33 @@
+.dashboard {
+    margin: 60px;
+}
+
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0px;
+    padding: 0px;
+    border-top: solid;
+    border-left: solid;
+    border-width: 1px;
+    border-left-color: rgb(177, 183, 183);
+    border-top-color: rgb(177, 183, 183);
+
+  }
+  
+  .container {
+    background-color: white;
+
+    border-right: solid;
+    border-bottom: solid;
+    border-right-color: rgb(177, 183, 183);
+    border-bottom-color: rgb(177, 183, 183);
+    border-width: 1px;
+    padding: 10px;
+    text-align: center;
+    justify-content: center;
+    height: 400px;
+    border-radius: 1px;
+  }
+  

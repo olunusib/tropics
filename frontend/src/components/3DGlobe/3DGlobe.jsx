@@ -4,7 +4,7 @@ import locations from '../location-data';
 
 const handleLabelClick = ({ name, size, lat, lng, color }) => {
 
-    window.open(`companyprofile`, '_blank')
+    window.open(`climateprofile/${name}`, '_blank')
 
 }
 
