@@ -1,9 +1,10 @@
 from flask import Flask
+from flask_cors import CORS
 import requests
 from datetime import datetime, timedelta
 
 api = Flask(__name__)
-
+CORS(api)
 
 def get_boundingbox_country(country):
     url = '{0}{1}{2}'.format(
@@ -20,7 +21,7 @@ def get_boundingbox_country(country):
     return output
 
 
-@api.route('/profile/<country>')
+@api.route('/temperature/<country>')
 def my_profile(country):
 
     lat, lng = get_boundingbox_country(country)
@@ -35,7 +36,7 @@ def my_profile(country):
     # mock indexes for 5 days
     temps_index = [5, 13, 22, 28, 35]
     for days, index in enumerate(temps_index):
-        mid_temps[str(datetime.now() + timedelta(days=days))] = {
+        mid_temps[str(datetime.now() + timedelta(days=days))[:10]] = {
             "temp": temps[index]['main']['feels_like'],
             "sea_level": temps[index]['main']['sea_level'],
             "ground_level": temps[index]['main']['grnd_level'],
@@ -45,7 +46,7 @@ def my_profile(country):
     return mid_temps
 
 
-@api.route('/details/<country>')
+@api.route('/carbon/<country>')
 def my_details(country):
 
     lat, lng = get_boundingbox_country(country)
@@ -60,6 +61,6 @@ def my_details(country):
     temps_index = [5, 13, 22, 28, 35]
     for days, index in enumerate(temps_index):
         mid_temps[str(datetime.now() + timedelta(
-            days=days))] = temps[index]['main']['feels_like']
+            days=days))[:10]] = temps[index]['main']['feels_like']
 
     return mid_temps
