@@ -53,7 +53,7 @@ const World = () => {
                 labelText={(d) => d.name}
                 labelSize={(d) => 0.5 + d.size}
                 labelDotRadius={(d) => 0.5 + d.size}
-                labelColor={() => "rgba(255, 255, 255, 0.9)"}
+                labelColor={(d) => d.fullyTropical ? "rgba(255, 0, 0, 0.9)" : "rgba(255, 255, 255, 0.9)"}
                 labelResolution={2}
                 onLabelClick={(label_details, event) => handleLabelClick(label_details)}
 
