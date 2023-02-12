@@ -32,3 +32,19 @@ export const useAxiosGetForWeather = (country) => {
   
     return { carbonData, error, carbonLoaded };
   };
+
+  export const useAxiosGetForForestry = (country) => {
+    const [forestryData, setForestryData] = useState(null);
+    const [error, setError] = useState("");
+    const [forestryLoaded, setForestryLoaded] = useState(false);
+  
+    useEffect(() => {
+      axios
+        .get(`http://localhost:5000/forestry/${country}`)
+        .then((response) => setForestryData(response.data))
+        .catch((error) => setError(error.message))
+        .finally(() => setForestryLoaded(true));
+    }, [country]);
+  
+    return { forestryData, error, forestryLoaded };
+  };

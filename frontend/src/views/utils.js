@@ -58,3 +58,29 @@ export const convertToNivoFormatCarbon = (rawData) => {
     return final;
 
 }
+
+export const convertToNivoFormatForestry = (rawData) => {
+
+    const firstValue = rawData["score"];
+    const country = rawData["country"];
+    const image_src = rawData["image"];
+
+    var final = [
+        {
+            "id": "Others",
+            "label": "Others",
+            "value": 100 - Math.abs(firstValue),
+            "color": "hsl(245, 70%, 50%)"
+        },
+        {
+            "id": country,
+            "label": country,
+            "value": Math.abs(firstValue),
+            "color": "hsl(46, 70%, 50%)"
+        },
+
+    ]
+
+    return {final, image_src};
+}
+

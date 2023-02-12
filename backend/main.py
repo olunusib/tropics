@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 api = Flask(__name__)
 CORS(api)
 
+
 def get_boundingbox_country(country):
     url = '{0}{1}{2}'.format(
         'http://nominatim.openstreetmap.org/search?country=', country,
@@ -53,16 +54,19 @@ def my_profile(country):
 def my_details(country):
 
     country_name = country
-    country_emissions = next(item for item in emissions if item["country"].lower() == f"{country_name.lower()}")
-    
+    country_emissions = next(
+        item for item in emissions
+        if item["country"].lower() == f"{country_name.lower()}")
 
     print(country_emissions)
     return country_emissions
 
-@api.route('/forestry/country')
+
+@api.route('/forestry/<country>')
 def forestry(country):
     # get URL
-    page = requests.get("https://en.wikipedia.org/wiki/Forest_Landscape_Integrity_Index")
+    page = requests.get(
+        "https://en.wikipedia.org/wiki/Forest_Landscape_Integrity_Index")
 
     # scrape webpage
     soup = BeautifulSoup(page.content, 'html.parser')
@@ -72,18 +76,21 @@ def forestry(country):
 
     images = My_table.find_all('img')
 
-
     for i in range(1, len(images), 2):
         src = images[i].get('src')
         if country in src:
             source = 'http:' + src
-            return {country: {"score": integrity_scores[country],
-                              "image": source
-                              }
-                    }
-            
-    return {country: {"score": 5.0,
-                      "image": "https://upload.wikimedia.org/wikipedia/commons/1/11/FLII_Bhutan.png",
-                      }
+            return {
+                "country": country,
+                "score": integrity_scores[country]["Score"],
+                "image": source
             }
-    
+
+    return {
+        "country":
+        country,
+        "score":
+        5.0,
+        "image":
+        "https://upload.wikimedia.org/wikipedia/commons/1/11/FLII_Bhutan.png"
+    }
